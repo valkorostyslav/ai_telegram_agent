@@ -1,26 +1,27 @@
-from langchain.chains.llm import LLMChain
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.prompts import (
+from operator import itemgetter
+from typing import Any, Dict, List, Optional
+
+from langchain_chroma import Chroma
+from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_core.messages import BaseMessage
+from langchain_core.prompts import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
     MessagesPlaceholder,
     SystemMessagePromptTemplate,
 )
-from langchain_chroma import Chroma
-from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_openai import ChatOpenAI
 
 CHROMA_PATH = "chroma_db"
 
 
 def get_chatbot():
-    # Використання OpenAI з локальним Ollama
     llm = ChatOpenAI(
         model="llama3.2",
         temperature=0.7,
         max_tokens=512,
-        openai_api_key="ollama",
-        openai_api_base="http://localhost:11434/v1",
+        api_key="ollama",
+        base_url="http://localhost:11434/v1",
     )
 
     embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
@@ -49,26 +50,24 @@ def get_chatbot():
         ]
     )
 
-    # Створюємо ланцюжок з пам'яттю
-    memory = ConversationBufferWindowMemory(
-        k=5,
-        return_messages=True,
-        memory_key="history",
-        input_key="question",  # Вказуємо ключ для вхідного повідомлення
+    def get_context(input_dict: Dict[str, Any]) -> str:
+        docs = retriever.invoke(input_dict["question"])
+        return "\n".join(doc.page_content for doc in docs)
+
+    chain = (
+        {
+            "context": lambda x: get_context(x),
+            "question": itemgetter("question"),
+            "history": lambda x: x.get("history", []),
+        }
+        | prompt
+        | llm
     )
 
-    conversation = LLMChain(llm=llm, prompt=prompt, verbose=True, memory=memory)
-
-    # Функція для обробки запитів
-    def process_query(query):
-        # Отримуємо релевантні документи
-        docs = retriever.get_relevant_documents(query)
-        context = "\n".join([doc.page_content for doc in docs])
-
-        # Отримуємо відповідь
-        response = conversation.predict(
-            question=query, context=context
-        )  # Змінили input на question
-        return response
+    def process_query(query: str, history: Optional[List[BaseMessage]] = None) -> str:
+        if history is None:
+            history = []
+        response = chain.invoke({"question": query, "history": history})
+        return str(response.content)
 
     return process_query
