@@ -23,7 +23,7 @@ print("🧠 Завантажуємо чатбота...")
 process_query = get_chatbot()
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     welcome_message = """👋 Вітаю! Я консультант автосалону AutoDream.
 
 🚗 Я допоможу вам:
@@ -37,13 +37,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(welcome_message)
 
 
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_input = update.message.text
     response = process_query(user_input)
     await update.message.reply_text(response)
 
 
-def main():
+def main() -> None:
     app = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))

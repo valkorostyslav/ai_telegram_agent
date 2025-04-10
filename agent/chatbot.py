@@ -1,5 +1,5 @@
 from operator import itemgetter
-from typing import Any, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 from langchain_chroma import Chroma
 from langchain_community.embeddings import SentenceTransformerEmbeddings
@@ -15,7 +15,7 @@ from langchain_openai import ChatOpenAI
 CHROMA_PATH = "chroma_db"
 
 
-def get_chatbot():
+def get_chatbot() -> Callable[..., str]:
     llm = ChatOpenAI(
         model="llama3.2",
         temperature=0.7,
