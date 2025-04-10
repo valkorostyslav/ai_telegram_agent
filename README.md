@@ -1,105 +1,105 @@
 # AI Telegram Agent
 
-Telegram бот-консультант автосалону на базі Google Gemini API з підтримкою контексту розмови та базою знань.
+A Telegram bot consultant for a car dealership based on Google Gemini API with conversation context support and knowledge base.
 
-## Особливості
+## Features
 
-- 🤖 Інтеграція з Google Gemini API для обробки запитів
-- 💬 Інтеграція з Telegram
-- 📚 Зберігання та читання бази знань з файлу
-- 🧠 Підтримка контексту розмови (останні 10 повідомлень)
-- 🔄 Автоматичне оновлення бази знань (читання перед кожною відповіддю)
-- 🎯 Спеціалізація на консультуванні по автосалону
+- 🤖 Google Gemini API integration for query processing
+- 💬 Telegram integration
+- 📚 Knowledge base storage and file reading
+- 🧠 Conversation context support (last 10 messages)
+- 🔄 Automatic knowledge base updates (reading before each response)
+- 🎯 Specialization in car dealership consulting
 
-## Вимоги
+## Requirements
 
 - Python 3.8+
-- Gemini API Key (отримати в [Google AI Studio](https://makersuite.google.com/app/apikey))
-- Telegram Bot Token (отримати у [@BotFather](https://t.me/BotFather))
+- Gemini API Key (get it from [Google AI Studio](https://makersuite.google.com/app/apikey))
+- Telegram Bot Token (get it from [@BotFather](https://t.me/BotFather))
 
-## Встановлення
+## Installation
 
-1. Клонуйте репозиторій:
+1. Clone the repository:
 ```bash
 git clone https://github.com/valkorostyslav/ai_telegram_agent.git
 cd ai_telegram_agent
 ```
 
-2. Створіть та активуйте віртуальне середовище:
+2. Create and activate virtual environment:
 ```bash
 python -m venv venv
-source venv/bin/activate  # для Linux/Mac
-# або
-.\venv\Scripts\activate  # для Windows
+source venv/bin/activate  # for Linux/Mac
+# or
+.\venv\Scripts\activate  # for Windows
 ```
 
-3. Встановіть залежності:
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Створіть файл .env на основі .env.example:
+4. Create .env file based on .env.example:
 ```bash
 cp .env.example .env
 ```
 
-5. Налаштуйте змінні середовища в .env:
-- Додайте ваш Telegram Bot Token (TELEGRAM_BOT_TOKEN)
-- Додайте ваш Gemini API Key (GEMINI_API_KEY)
-- За потреби налаштуйте TEMPERATURE та MAX_TOKENS
+5. Configure environment variables in .env:
+- Add your Telegram Bot Token (TELEGRAM_BOT_TOKEN)
+- Add your Gemini API Key (GEMINI_API_KEY)
+- Optionally configure TEMPERATURE and MAX_TOKENS
 
-## Використання
+## Usage
 
-1. Запустіть бота:
+1. Start the bot:
 ```bash
 python main.py
 ```
 
-2. Відкрийте Telegram і почніть спілкування з ботом
+2. Open Telegram and start chatting with the bot
 
-## Структура проекту
+## Project Structure
 
-- `main.py` - головний файл бота
-- `agent/` - основна логіка бота
-  - `chatbot.py` - обробка повідомлень та взаємодія з Gemini API
-- `data/` - файли бази знань
-  - `knowledge.txt` - база знань автосалону
-- `.env` - конфігураційні змінні
+- `main.py` - main bot file
+- `agent/` - core bot logic
+  - `chatbot.py` - message processing and Gemini API interaction
+- `data/` - knowledge base files
+  - `knowledge.txt` - dealership knowledge base
+- `.env` - configuration variables
 
-## Функціонал
+## Functionality
 
-1. **Комунікація через Telegram**
-   - Миттєві відповіді на повідомлення
-   - Зручний інтерфейс через Telegram
-   - Команда /start для початку роботи
+1. **Telegram Communication**
+   - Instant message responses
+   - User-friendly Telegram interface
+   - /start command to begin interaction
 
-2. **Підтримка контексту**
-   - Зберігання історії розмови для кожного користувача
-   - Обмеження до 10 останніх повідомлень
-   - Використання контексту для генерації відповідей
+2. **Context Support**
+   - Conversation history storage for each user
+   - Limited to last 10 messages
+   - Context utilization for response generation
 
-3. **База знань**
-   - Зберігання інформації в текстовому файлі
-   - Оновлення даних без перезапуску бота
-   - Автоматичне читання перед кожною відповіддю
+3. **Knowledge Base**
+   - Information storage in text file
+   - Updates without bot restart
+   - Automatic reading before each response
 
-4. **Консультування**
-   - Інформація про доступні автомобілі
-   - Умови придбання та кредитування
-   - Запис на тест-драйв
-   - Гарантія та сервіс
-   - Контактна інформація
+4. **Consulting**
+   - Available cars information
+   - Purchase and financing conditions
+   - Test drive scheduling
+   - Warranty and service
+   - Contact information
 
-## Безпека
+## Security
 
-- API ключі зберігаються в .env файлі
-- Історія розмов зберігається тільки в пам'яті
-- Обмежена кількість повідомлень в історії
+- API keys stored in .env file
+- Conversation history stored only in memory
+- Limited number of messages in history
 
-## Розробка
+## Development
 
-Для модифікації бази знань просто відредагуйте файл `data/knowledge.txt`. Зміни будуть застосовані автоматично при наступному запиті до бота.
+To modify the knowledge base, simply edit the `data/knowledge.txt` file. Changes will be applied automatically on the next query to the bot.
 
-## Ліцензія
+## License
 
 MIT 
