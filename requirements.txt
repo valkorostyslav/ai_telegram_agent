@@ -1,0 +1,11 @@
+python-telegram-bot==22.0
+python-dotenv==1.1.0
+langchain==0.3.23
+langchain-openai==0.3.12
+langchain-community==0.3.21
+langchain-core==0.3.51
+langchain-chroma==0.2.2
+sentence-transformers==4.0.2
+chromadb==0.5.0
+pydantic==2.11.3
+typing_extensions==4.13.1 
