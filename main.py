@@ -1,6 +1,8 @@
 import os
+from typing import Dict, List
 
 from dotenv import load_dotenv
+from langchain_core.messages import AIMessage, HumanMessage
 from telegram import Update
 from telegram.ext import (
     Application,
@@ -22,6 +24,9 @@ load_knowledge_base()
 print("🧠 Завантажуємо чатбота...")
 process_query = get_chatbot()
 
+# Dictionary to store conversation history for each user
+conversation_history: Dict[int, List] = {}
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     welcome_message = """👋 Вітаю! Я консультант автосалону AutoDream.
@@ -35,11 +40,25 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 Просто напишіть ваше питання, і я з радістю допоможу! 🤝"""
     await update.message.reply_text(welcome_message)
+    conversation_history[update.effective_user.id] = []
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    user_id = update.effective_user.id
     user_input = update.message.text
-    response = process_query(user_input)
+
+    if user_id not in conversation_history:
+        conversation_history[user_id] = []
+
+    history = conversation_history[user_id]
+
+    response = process_query(user_input, history)
+
+    history.append(HumanMessage(content=user_input))
+    history.append(AIMessage(content=response))
+
+    conversation_history[user_id] = history[-10:]
+
     await update.message.reply_text(response)
 
 

@@ -1,66 +1,105 @@
 # AI Telegram Agent
 
-A Telegram bot using local Ollama model for processing user queries based on a knowledge base.
+Telegram бот-консультант автосалону на базі Google Gemini API з підтримкою контексту розмови та базою знань.
 
-## Features
+## Особливості
 
-- 🤖 Local LLM model integration via Ollama
-- 💬 Telegram integration
-- 📚 Vector database for knowledge storage and retrieval
-- 🔍 Semantic search for relevant information
-- 🧠 Contextual memory for dialogue support
+- 🤖 Інтеграція з Google Gemini API для обробки запитів
+- 💬 Інтеграція з Telegram
+- 📚 Зберігання та читання бази знань з файлу
+- 🧠 Підтримка контексту розмови (останні 10 повідомлень)
+- 🔄 Автоматичне оновлення бази знань (читання перед кожною відповіддю)
+- 🎯 Спеціалізація на консультуванні по автосалону
 
-## Requirements
+## Вимоги
 
 - Python 3.8+
-- [Ollama](https://ollama.ai/) with llama2 model installed
-- Telegram Bot Token
+- Gemini API Key (отримати в [Google AI Studio](https://makersuite.google.com/app/apikey))
+- Telegram Bot Token (отримати у [@BotFather](https://t.me/BotFather))
 
-## Installation
+## Встановлення
 
-1. Clone the repository:
+1. Клонуйте репозиторій:
 ```bash
 git clone https://github.com/valkorostyslav/ai_telegram_agent.git
 cd ai_telegram_agent
 ```
 
-2. Create and activate virtual environment:
+2. Створіть та активуйте віртуальне середовище:
 ```bash
 python -m venv venv
-source venv/bin/activate  # for Linux/Mac
-# or
-.\venv\Scripts\activate  # for Windows
+source venv/bin/activate  # для Linux/Mac
+# або
+.\venv\Scripts\activate  # для Windows
 ```
 
-3. Install dependencies:
+3. Встановіть залежності:
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Copy .env.example to .env and configure environment variables:
+4. Створіть файл .env на основі .env.example:
 ```bash
 cp .env.example .env
 ```
 
-5. Start Ollama server and ensure llama2 model is installed:
-```bash
-ollama run llama2
-```
+5. Налаштуйте змінні середовища в .env:
+- Додайте ваш Telegram Bot Token (TELEGRAM_BOT_TOKEN)
+- Додайте ваш Gemini API Key (GEMINI_API_KEY)
+- За потреби налаштуйте TEMPERATURE та MAX_TOKENS
 
-## Usage
+## Використання
 
-1. Start the bot:
+1. Запустіть бота:
 ```bash
 python main.py
 ```
 
-2. Open Telegram and start chatting with the bot
+2. Відкрийте Telegram і почніть спілкування з ботом
 
-## Project Structure
+## Структура проекту
 
-- `main.py` - main bot entry point
-- `agent/` - core bot logic
-  - `chatbot.py` - message processing and LLM interaction
-  - `knowledge_base.py` - vector database operations
-- `data/` - knowledge base files
-- `chroma_db/` - directory for vector database storage 
+- `main.py` - головний файл бота
+- `agent/` - основна логіка бота
+  - `chatbot.py` - обробка повідомлень та взаємодія з Gemini API
+- `data/` - файли бази знань
+  - `knowledge.txt` - база знань автосалону
+- `.env` - конфігураційні змінні
+
+## Функціонал
+
+1. **Комунікація через Telegram**
+   - Миттєві відповіді на повідомлення
+   - Зручний інтерфейс через Telegram
+   - Команда /start для початку роботи
+
+2. **Підтримка контексту**
+   - Зберігання історії розмови для кожного користувача
+   - Обмеження до 10 останніх повідомлень
+   - Використання контексту для генерації відповідей
+
+3. **База знань**
+   - Зберігання інформації в текстовому файлі
+   - Оновлення даних без перезапуску бота
+   - Автоматичне читання перед кожною відповіддю
+
+4. **Консультування**
+   - Інформація про доступні автомобілі
+   - Умови придбання та кредитування
+   - Запис на тест-драйв
+   - Гарантія та сервіс
+   - Контактна інформація
+
+## Безпека
+
+- API ключі зберігаються в .env файлі
+- Історія розмов зберігається тільки в пам'яті
+- Обмежена кількість повідомлень в історії
+
+## Розробка
+
+Для модифікації бази знань просто відредагуйте файл `data/knowledge.txt`. Зміни будуть застосовані автоматично при наступному запиті до бота.
+
+## Ліцензія
+
+MIT 
